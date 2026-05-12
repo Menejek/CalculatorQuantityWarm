@@ -10,14 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup JDK 17
+      - name: Setup JDK 11
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '11'
           distribution: 'temurin'
 
       - name: Build with Gradle
-        run: ./gradlew.bat clean build
+        run: ./gradlew.bat clean build --no-daemon
 
       - name: Create EXE with jpackage
         run: |
