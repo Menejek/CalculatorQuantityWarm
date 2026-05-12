@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -15,21 +16,16 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew.bat
 
       - name: Build with Gradle
         run: ./gradlew.bat clean build --no-daemon
 
       - name: Create EXE with jpackage
-        run: |
-          jpackage \
-            --type exe \
-            --input build\libs \
-            --dest dist \
-            --name LocalCalc \
-            --main-jar LocalCalc-1.0-SNAPSHOT.jar \
-            --main-class org.example.localcalc.HelloApplication \
-            --win-shortcut \
-            --win-menu
+        run: jpackage --type exe --input build/libs --dest dist --name LocalCalc --main-jar LocalCalc-1.0-SNAPSHOT.jar --main-class org.example.localcalc.HelloApplication --icon src/main/resources/icon.ico --win-shortcut --win-menu
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
